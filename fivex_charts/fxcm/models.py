@@ -34,14 +34,3 @@ class ClosedTrades(models.Model):
     sellcondition = models.CharField(max_length=3)
     createdbyaccount = models.IntegerField()
     journal = models.TextField()
-
-'''
-class AccountActivity(models.Model):
-    timeposted = models.DateTimeField()
-    code = models.CharField(max_length=10)
-    description = models.TextField(max_length=100)
-    account = models.IntegerField()
-    ticket = models.IntegerField()
-    amount = models.DecimalField(max_digits=None, decimal_places=2)
-    balance = models.DecimalField(max_digits=None, decimal_places=2)
-'''
