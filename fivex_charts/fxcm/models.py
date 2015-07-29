@@ -15,7 +15,8 @@ class UserProfile(models.Model):
 
 
 class ClosedTrades(models.Model):
-    user = models.ForeignKey(UserProfile)
+    user = models.ForeignKey(User)
+    data = models.ForeignKey(UploadedData)
     ticket = models.IntegerField()
     symbol = models.CharField(max_length=7)
     volume = models.IntegerField()
@@ -33,4 +34,8 @@ class ClosedTrades(models.Model):
     buycondition = models.CharField(max_length=3)
     sellcondition = models.CharField(max_length=3)
     createdbyaccount = models.IntegerField()
-    journal = models.TextField()
+
+
+class UploadedData(models.Model):
+    data = models.FileField(upload_to='csv_data')
+    create_time = models.DateTimeField(auto_now_add=True)

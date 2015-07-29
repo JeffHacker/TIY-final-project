@@ -15,7 +15,10 @@ Including another URLconf
 """
 from django.conf.urls import include, url
 from django.contrib import admin
+from fxcm.views import DataCreateView, data_create_view
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
+#    url(r'^upload_data/', DataCreateView.as_view(), name='upload_data'),
+    url(r'^upload_data/', data_create_view, name='upload_data'),
 ]
