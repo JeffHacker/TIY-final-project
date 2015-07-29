@@ -1,16 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="0b6d44cc-d259-4f00-a33e-a5916fac5d3c" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/fivex_charts/Templates/Base.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/fivex_charts/Templates/charts.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/fivex_charts/Templates/upload_data.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/fivex_charts/fxcm/models.py" afterPath="$PROJECT_DIR$/fivex_charts/fxcm/models.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/fivex_charts/fivex_charts/settings.py" afterPath="$PROJECT_DIR$/fivex_charts/fivex_charts/settings.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/fivex_charts/fivex_charts/urls.py" afterPath="$PROJECT_DIR$/fivex_charts/fivex_charts/urls.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/fivex_charts/fxcm/views.py" afterPath="$PROJECT_DIR$/fivex_charts/fxcm/views.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-    </list>
+    <list default="true" id="0b6d44cc-d259-4f00-a33e-a5916fac5d3c" name="Default" comment="" />
     <ignored path="final_project.iws" />
     <ignored path=".idea/workspace.xml" />
     <ignored path=".idea/dataSources.local.xml" />
