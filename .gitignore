@@ -2,4 +2,5 @@
 .direnv
 .envrc
 .idea
-
+*.csv
+*.xml

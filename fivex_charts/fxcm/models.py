@@ -14,6 +14,11 @@ class UserProfile(models.Model):
         return 'username: {}'.format(self.user)
 
 
+class UploadedData(models.Model):
+    data = models.FileField(upload_to='csv_data/%Y/%m/%d')
+    create_time = models.DateTimeField(auto_now_add=True)
+
+
 class ClosedTrades(models.Model):
     user = models.ForeignKey(User)
     data = models.ForeignKey(UploadedData)
@@ -36,6 +41,3 @@ class ClosedTrades(models.Model):
     createdbyaccount = models.IntegerField()
 
 
-class UploadedData(models.Model):
-    data = models.FileField(upload_to='csv_data')
-    create_time = models.DateTimeField(auto_now_add=True)
