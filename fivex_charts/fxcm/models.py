@@ -20,7 +20,7 @@ class UploadedData(models.Model):
 
 
 class ClosedTrades(models.Model):
-    user = models.ForeignKey(User)
+    user = models.ForeignKey(User, null=True)
     data = models.ForeignKey(UploadedData)
     ticket = models.IntegerField()
     symbol = models.CharField(max_length=7)
@@ -38,6 +38,6 @@ class ClosedTrades(models.Model):
     netprofitloss = models.DecimalField(max_digits=10, decimal_places=2)
     buycondition = models.CharField(max_length=3)
     sellcondition = models.CharField(max_length=3)
-    createdbyaccount = models.IntegerField()
+    createdbyaccount = models.BigIntegerField()
 
 
