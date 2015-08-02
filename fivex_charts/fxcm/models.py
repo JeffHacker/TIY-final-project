@@ -3,7 +3,6 @@ from django.contrib.auth.models import User
 
 # Create your models here.
 
-
 class UserProfile(models.Model):
     user = models.OneToOneField(User, null=True)
     member = models.BooleanField(default=False)
@@ -14,12 +13,17 @@ class UserProfile(models.Model):
         return 'username: {}'.format(self.user)
 
 
+class Graph(models.Model):
+    content = models.TextField()
+    data = models.TextField(db_index=True)
+
+
 class UploadedData(models.Model):
     data = models.FileField(upload_to='csv_data/%Y/%m/%d')
     create_time = models.DateTimeField(auto_now_add=True)
 
 
-class ClosedTrades(models.Model):
+class ClosedTrade(models.Model):
     user = models.ForeignKey(User, null=True)
     data = models.ForeignKey(UploadedData)
     ticket = models.IntegerField()

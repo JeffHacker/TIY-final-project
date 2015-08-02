@@ -16,15 +16,13 @@ Including another URLconf
 from django.conf.urls import include, url
 from django.conf import settings
 from django.conf.urls.static import static
-
 from django.contrib import admin
-from fxcm.views import upload_data, chart_list_view, hello
-
+from fxcm.views import upload_data, hello, chart_list_view, matplot_lib
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^$', upload_data, name='uploaod_data'),
     url(r'^hello/', hello, name='hello'),
     url(r'^upload_data/', upload_data, name='upload_data'),
-    url(r'^charts/', chart_list_view, name='charts'),
+    url(r'^charts/', matplot_lib, name='charts'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
