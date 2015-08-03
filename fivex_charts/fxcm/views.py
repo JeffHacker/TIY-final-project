@@ -20,8 +20,13 @@ def matplot_lib(request):
     graph_two = scatter_to_base64(df, "ave_pl_by_wkday")
     graph_three = scatter_to_base64(df, "ave_pl_by_month")
     graph_four = scatter_to_base64(df, "ave_pl_by_year")
+    graph_five = scatter_to_base64(df, "ave_pl_by_direction")
+    graph_six = scatter_to_base64(df, "ave_pl_by_session")
+    graph_seven = scatter_to_base64(df, "ave_pl_by_dir_session")
     return render_to_response("charts.html", {"graph_one": graph_one, "graph_two": graph_two
-                                              , "graph_three": graph_three, "graph_four": graph_four})
+                                              , "graph_three": graph_three, "graph_four": graph_four
+                                              , "graph_five": graph_five, "graph_six": graph_six
+                                              , "graph_seven": graph_seven})
 
 
 def upload_data(request):

@@ -2,6 +2,7 @@ import matplotlib.pyplot as plt
 from base64 import b64encode
 import pandas as pd
 import io
+from itertools import cycle, islice
 import seaborn
 
 def scatter_to_base64(df,action):
@@ -18,6 +19,32 @@ def scatter_to_base64(df,action):
     elif action == "ave_pl_by_year":
         df['year'] = pd.DatetimeIndex(df['open_date']).year
         image = df.groupby(df['year']).gross_pl.mean().plot(kind="barh")
+    elif action == "ave_pl_by_direction":
+        image = df.groupby(['direction']).gross_pl.mean().plot(kind="barh")
+    elif action == "ave_pl_by_session":
+        df['hour'] = pd.DatetimeIndex(df['open_date']).hour
+        def create_session_range(hour):
+            if 3 <= hour < 8:
+                return "Eur"
+            elif 8 <= hour < 17:
+                return "US"
+            else:
+                return "Asia"
+        df["session"] = df["hour"].map(create_session_range)
+        image = df.groupby(df['session']).gross_pl.mean().plot(kind="barh")
+    elif action == "ave_pl_by_dir_session":
+        df['hour'] = pd.DatetimeIndex(df['open_date']).hour
+        def create_session_range(hour):
+            if 3 <= hour < 8:
+                return "Eur"
+            elif 8 <= hour < 17:
+                return "US"
+            else:
+                return "Asia"
+        df["session"] = df["hour"].map(create_session_range)
+        pivoted_df = pd.pivot_table(df, index=["session", "direction"], values=["gross_pl"])
+        image = pivoted_df.plot(kind="barh")
+        #image = pivoted_df.plot(kind="barh", color=list(islice(cycle(['b', 'b', 'g', 'g', 'r', 'r']), None, len(pivoted_df))))
 
 
 
