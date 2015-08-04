@@ -1,0 +1,9 @@
+{% block body %}
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_table }}
+        <button type="submit">Register</button>
+        <input type="hidden" name="next" value="{% url 'charts' %}" />
+    </form>
+    fjfyudmyjyjyjn
+{% endblock %}
