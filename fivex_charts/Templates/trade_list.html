@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <body>
+<style>
+
+.trade{
+    margin-bottom: 4%;
+    margin-top: 4%;
+}
+
+</style>
+
+    {% for trade in object_list %}
+
+    <div class="trade">{{ trade.data }}</div>
+    {% endfor %}
+
+    </body>
+{% endblock %}
+
+
+{% block id_user %}
+{% endblock %}

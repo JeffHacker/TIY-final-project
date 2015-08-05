@@ -5,18 +5,22 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
 from django.shortcuts import render_to_response, redirect
 from django.template import RequestContext
+from django.core.urlresolvers import reverse_lazy
+from django.views.generic import ListView
 from .forms import UploadFileForm
 from .models import UploadedData, ClosedTrade
 
 # Create your views here.
-
+@login_required
 def logout_view(request):
     logout(request)
     return redirect('login')
 
+
+@login_required
 def matplot_lib(request):  # this creates the charts using converter.py
-    data = UploadedData.objects.get(id=39)
-    print(data.data)
+    data = ClosedTrade.objects.filter(user=request.user)
+    print(data)
     df = pd.read_csv(data.data)
     print(df.head(2))
 
@@ -38,7 +42,7 @@ def upload_data(request):
         form = UploadFileForm(request.POST, request.FILES)
         if form.is_valid():
             trade_list = list(request.FILES['data'])
-            newdoc = UploadedData(data = request.FILES['data']) #data is the FileField in my UploadedData model
+            newdoc = UploadedData(user=request.user, data = request.FILES['data']) #data is the FileField in my UploadedData model
             newdoc.save()  # save file to FileField
             #print(newdoc)
             #reading in the data fields
@@ -58,8 +62,7 @@ def upload_data(request):
                 trade_info[12] = float(trade_info[12])
                 trade_info[13] = float(trade_info[13])
                 trade_info[16] = int(trade_info[16])
-                # insert below - user=request.user
-                ClosedTrade.objects.create(data=newdoc, ticket=trade_info[0], symbol=trade_info[1], volume=trade_info[2],
+                ClosedTrade.objects.create(user=request.user, data=newdoc, ticket=trade_info[0], symbol=trade_info[1], volume=trade_info[2],
                                             opendatetime=trade_info[3], closedatetime=trade_info[4], soldprice=trade_info[5],
                                             boughtprice=trade_info[6], direction=trade_info[7],
                                             grossprofitloss=trade_info[8], comm=trade_info[9], dividends=trade_info[10],
@@ -72,11 +75,3 @@ def upload_data(request):
     # Render list page with the documents and the form
     return render_to_response('upload_data.html',
                               {'documents': documents, 'form': form}, context_instance=RequestContext(request))
-
-
-#def chart_list_view(request):  # I added this to test
-#    return render_to_response("charts.html", context_instance=RequestContext(request))
-
-
-def hello(request):
-    return render_to_response("base.html", context_instance=RequestContext(request))

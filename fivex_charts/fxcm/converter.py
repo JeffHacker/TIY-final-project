@@ -2,12 +2,9 @@ import matplotlib.pyplot as plt
 from base64 import b64encode
 import pandas as pd
 import io
-from itertools import cycle, islice
 import seaborn
 
 def scatter_to_base64(df,action):
-    print(df)
-    print(df.groupby(['symbol']).gross_pl.mean())
     if action == "ave_pl_by_symbol":
         image = df.groupby(['symbol']).gross_pl.mean().plot(kind="barh")
     elif action == "ave_pl_by_wkday":
@@ -44,8 +41,6 @@ def scatter_to_base64(df,action):
         df["session"] = df["hour"].map(create_session_range)
         pivoted_df = pd.pivot_table(df, index=["session", "direction"], values=["gross_pl"])
         image = pivoted_df.plot(kind="barh")
-        #image = pivoted_df.plot(kind="barh", color=list(islice(cycle(['b', 'b', 'g', 'g', 'r', 'r']), None, len(pivoted_df))))
-
 
 
     #########################

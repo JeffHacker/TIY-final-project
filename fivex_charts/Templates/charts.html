@@ -1,17 +1,24 @@
-{% extends 'base.html' %}
-
-
-<!DOCTYPE html>
-<html>
-<head lang="en">
-    <meta charset="UTF-8">
-    <title>Charts</title>
-</head>
+{% block nav_bar %}
+<style>
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+</style>
+<ul>
 <body>
+  <li><a href=/charts/>Charts</a></li>
+  <li><a href=/upload_data/>Upload Data</a></li>
+  <li><a href=/trade_list/>Trade details</a></li>
+  <li><a href="{% url 'logout' %}">logout</a></li>
+</ul>
+{% endblock %}
 
-<div class="content"><h1>Welcome to my graph page</h1></div>
 
 
+{% block content %}
+<body>
 <div class="image-holder">
 <img src="{{ graph_one }}"/>
 <img src="{{ graph_two }}"/>
@@ -20,7 +27,11 @@
 <img src="{{ graph_five }}"/>
 <img src="{{ graph_six }}"/>
 <img src="{{ graph_seven }}"/>
-
 </div>
 </body>
-</html>
+{% endblock %}
+
+
+
+{% block id_user %}
+{% endblock %}

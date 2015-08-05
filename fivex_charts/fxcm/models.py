@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 # Create your models here.
 
 class UserProfile(models.Model):
-    user = models.OneToOneField(User, null=True)
+    user = models.OneToOneField(User)
     member = models.BooleanField(default=False)
     administrator = models.BooleanField(default=False)
     email = models.EmailField()
@@ -19,14 +19,15 @@ class Graph(models.Model):
 
 
 class UploadedData(models.Model):
+    user = models.ForeignKey(User)
     data = models.FileField(upload_to='csv_data/%Y/%m/%d')
     create_time = models.DateTimeField(auto_now_add=True)
 
 
 class ClosedTrade(models.Model):
-    user = models.ForeignKey(User, null=True)
+    user = models.ForeignKey(User)
     data = models.ForeignKey(UploadedData)
-    ticket = models.IntegerField()
+    ticket = models.IntegerField(unique=True)
     symbol = models.CharField(max_length=7)
     volume = models.IntegerField()
     opendatetime = models.DateTimeField()
@@ -43,5 +44,10 @@ class ClosedTrade(models.Model):
     buycondition = models.CharField(max_length=3)
     sellcondition = models.CharField(max_length=3)
     createdbyaccount = models.BigIntegerField()
-
-
+    def __str__(self):
+        return "Ticket:{}   Pair:{}   Volume:{}   Open Date/Time:{}   Close Date/Time:{}   Sell Price:{}   Buy Price:{} " \
+               "  Dir:{}   Gross P/L:{}   Commision:{}   Dividends:{}   Rollover:{}   Adjust:{}   Net P/L:{}   Buy Cond:{}  " \
+               " Sell Cond{}   Acct:{}".format(self.ticket, self.symbol, self.volume, self.opendatetime, self.closedatetime,
+                                               self.soldprice, self.boughtprice, self.direction, self.grossprofitloss,
+                                               self.comm, self.dividends, self.rollover, self.adj, self.netprofitloss,
+                                               self.buycondition, self.sellcondition, self.createdbyaccount)
