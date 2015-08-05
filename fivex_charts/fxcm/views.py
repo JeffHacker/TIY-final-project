@@ -20,8 +20,8 @@ def logout_view(request):
 @login_required
 def matplot_lib(request):  # this creates the charts using converter.py
     data = ClosedTrade.objects.filter(user=request.user)
-    print(data)
-    df = pd.read_csv(data.data)
+    print("data", data)
+    df = pd.read_csv(data)
     print(df.head(2))
 
     graph_one = scatter_to_base64(df, "ave_pl_by_symbol")
