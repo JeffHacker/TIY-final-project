@@ -12,8 +12,7 @@
 </style>
 
     {% for trade in object_list %}
-
-    <div class="trade">{{ trade.data }}</div>
+    <div><a href="{% url "trade_detail" trade.id %}">{{ trade }}</a></div>
     {% endfor %}
 
     </body>

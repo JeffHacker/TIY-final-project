@@ -27,7 +27,7 @@ class UploadedData(models.Model):
 class ClosedTrade(models.Model):
     user = models.ForeignKey(User)
     data = models.ForeignKey(UploadedData)
-    ticket = models.IntegerField(unique=True)
+    ticket = models.IntegerField()
     symbol = models.CharField(max_length=7)
     volume = models.IntegerField()
     opendatetime = models.DateTimeField()
@@ -44,6 +44,10 @@ class ClosedTrade(models.Model):
     buycondition = models.CharField(max_length=3)
     sellcondition = models.CharField(max_length=3)
     createdbyaccount = models.BigIntegerField()
+
+    class Meta:
+        unique_together = ("user", "ticket")
+
     def __str__(self):
         return "Ticket:{}   Pair:{}   Volume:{}   Open Date/Time:{}   Close Date/Time:{}   Sell Price:{}   Buy Price:{} " \
                "  Dir:{}   Gross P/L:{}   Commision:{}   Dividends:{}   Rollover:{}   Adjust:{}   Net P/L:{}   Buy Cond:{}  " \
