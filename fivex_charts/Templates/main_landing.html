@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Welcome</title>
+    </head>
+    <body>
+
+        {% block content  %}
+            <p>Tracking your trading results is necessary for becoming a more profitable trader.</p>
+            <p>Let me help you save hours of manual data entry and analysis by using your own trade data that you can download from your broker.</p>
+            <p>Create an account and let's get started</p>
+        {% endblock %}
+
+    </body>
+</html>
+
+
+{% block id_user %}
+        <p>Welcome. Please <a href="{% url 'login' %}">login</a>:</p>
+{% endblock %}

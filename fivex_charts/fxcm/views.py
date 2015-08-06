@@ -28,6 +28,14 @@ class TradeDetailView(DetailView):
     template_name = 'trade_detail.html'
 
 
+def main_landing(request):
+    return render_to_response('main_landing.html')
+
+
+@login_required
+def internal_landing(request):
+    return render_to_response('internal_landing.html')
+
 
 @login_required
 def logout_view(request):
@@ -40,7 +48,7 @@ def matplot_lib(request):  # this creates the charts using converter.py
     qs = ClosedTrade.objects.filter(user=request.user)
     print(qs)
     if len(qs) == 0:
-        return redirect('upload_data')
+        return redirect('trade_list')
     else:
         print("QS", qs)
         df = read_frame(qs, coerce_float=True).convert_objects(convert_numeric=True, convert_dates=True)

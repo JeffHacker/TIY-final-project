@@ -12,12 +12,7 @@
 </table>
 
 <input type="submit" value="login" />
-<input type="hidden" name="next" value="/" />
+<input type="hidden" name="next" value='{% url "internal_landing" %}' />
 </form>
 {% endblock %}
 
-{% if user.is_authenticated %}
-    <p>Welcome, {{ user.username }}  <a href="{% url 'logout' %}">[logout]</a></p>
-{% else %}
-    <p>Welcome, Guest <a href="{% url 'login' %}">[login]</a></p>
-{% endif %}

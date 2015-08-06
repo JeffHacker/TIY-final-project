@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
 
 
 {% block nav_bar %}
@@ -15,13 +15,15 @@
       <li><a href=/trade_list/>Trade details</a></li>
       <li><a href="{% url 'logout' %}">logout</a></li>
       <li><a href="{% url 'internal_landing' %}">Home</a></li>
+
     </ul>
 {% endblock %}
 
 
-{% block content %}
-    {{ object }}
+{% block content  %}
+   <p>Internal Landing Page</p>
 {% endblock %}
+
 
 {% block id_user %}
 {% endblock %}

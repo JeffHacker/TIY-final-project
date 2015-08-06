@@ -1,18 +1,21 @@
+{% extends 'base.html' %}
+
+
 {% block nav_bar %}
-<style>
-ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-}
-</style>
-<ul>
-<body>
-  <li><a href=/charts/>Charts</a></li>
-  <li><a href=/upload_data/>Upload Data</a></li>
-  <li><a href=/trade_list/>Trade details</a></li>
-  <li><a href="{% url 'logout' %}">logout</a></li>
-</ul>
+    <style>
+    {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+    }
+    </style>
+    <ul>
+      <li><a href=/charts/>Charts</a></li>
+      <li><a href=/upload_data/>Upload Data</a></li>
+      <li><a href=/trade_list/>Trade details</a></li>
+      <li><a href="{% url 'logout' %}">logout</a></li>
+      <li><a href="{% url 'internal_landing' %}">Home</a></li>
+    </ul>
 {% endblock %}
 
 

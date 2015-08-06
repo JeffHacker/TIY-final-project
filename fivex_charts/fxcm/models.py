@@ -44,6 +44,7 @@ class ClosedTrade(models.Model):
     buycondition = models.CharField(max_length=3)
     sellcondition = models.CharField(max_length=3)
     createdbyaccount = models.BigIntegerField()
+    tradenotes = models.TextField(blank=True, help_text='Trade Notes:')
 
     class Meta:
         unique_together = ("user", "ticket")

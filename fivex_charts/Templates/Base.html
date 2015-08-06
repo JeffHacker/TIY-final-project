@@ -1,20 +1,19 @@
 {% block nav_bar %}
-<style>
-ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-}
-</style>
-<ul>
-<body>
-  <li><a href=/charts/>Charts</a></li>
-  <li><a href=/upload_data/>Upload Data</a></li>
-  <li><a href=/trade_list/>Trade details</a></li>
-  {% if user.is_authenticated %}
-  <li><a href="{% url 'logout' %}">logout</a></li>
-  {% endif %}
-</ul>
+    <style>
+    {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+    }
+    </style>
+    <ul>
+      {% if user.is_authenticated %}
+          <li><a href=/charts/>Charts</a></li>
+          <li><a href=/upload_data/>Upload Data</a></li>
+          <li><a href=/trade_list/>Trade details</a></li>
+          <li><a href="{% url 'logout' %}">logout</a></li>
+      {% endif %}
+    </ul>
 {% endblock %}
 
 
@@ -24,10 +23,9 @@ ul {
 
 
 {% block id_user %}
-{% if user.is_authenticated %}
-    <p>Welcome {{ user.username }}  <a href="{% url 'logout' %}">logout</a></p>
-{% else %}
-    <p>Welcome guest  <a href="{% url 'login' %}">login</a></p>
-    <p>Sign up  <a href="{% url 'register' %}">register</a></p>
-{% endif %}
+    {% if user.is_authenticated %}
+        <p>Welcome {{ user.username }}  <a href="{% url 'logout' %}">logout</a></p>
+    {% else %}
+        <p>If you do not have an account, please <a href="{% url 'register' %}">register</a></p>
+    {% endif %}
 {% endblock %}
