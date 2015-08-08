@@ -11,6 +11,7 @@ from django.core.urlresolvers import reverse_lazy
 from django.views.generic import ListView, DetailView
 from .forms import UploadFileForm
 from .models import UploadedData, ClosedTrade
+from numpy.random import randn
 
 # Create your views here.
 
@@ -45,26 +46,46 @@ def logout_view(request):
 
 @login_required
 def matplot_lib(request):  # this creates the charts using converter.py
+    context = {}
     qs = ClosedTrade.objects.filter(user=request.user)
-    print(qs)
+    context['message'] = "Charts represent all dates in database.  Select 'Start' and 'End' dates to select a specific date range"
     if len(qs) == 0:
         return redirect('trade_list')
-    else:
-        print("QS", qs)
-        df = read_frame(qs, coerce_float=True).convert_objects(convert_numeric=True, convert_dates=True)
-        print(df.head(1))
-        print(df.dtypes)
-        graph_one = scatter_to_base64(df, "ave_pl_by_symbol")
-        graph_two = scatter_to_base64(df, "ave_pl_by_wkday")
-        graph_three = scatter_to_base64(df, "ave_pl_by_month")
-        graph_four = scatter_to_base64(df, "ave_pl_by_year")
-        graph_five = scatter_to_base64(df, "ave_pl_by_direction")
-        graph_six = scatter_to_base64(df, "ave_pl_by_session")
-        graph_seven = scatter_to_base64(df, "ave_pl_by_dir_session")
-        return render_to_response("charts.html", {"graph_one": graph_one, "graph_two": graph_two
-                                                  , "graph_three": graph_three, "graph_four": graph_four
-                                                  , "graph_five": graph_five, "graph_six": graph_six
-                                                  , "graph_seven": graph_seven})
+    if request.method == 'POST':
+        start_date = request.POST['start_date']
+        end_date = request.POST['end_date']
+        context['message'] = "Charts represent trade data from {} to {}".format(start_date, end_date)
+        if 'start_date' == 'end_date':
+            context['message'] = "Charts represent data for {}".format(start_date)
+            qs = ClosedTrade.objects.filter(user=request.user, opendatetime = str(start_date))
+        else:
+            print(start_date, end_date)
+            qs = ClosedTrade.objects.filter(user=request.user, opendatetime__range=[str(start_date), str(end_date)]) # Date filters will likely plug in here!!!!!!!
+            print(qs)
+            if len(qs) == 0:
+                return render_to_response("charts.html", {"invalid_date_response": "These dates contain no trades" },
+                                                          context_instance=RequestContext(request))
+    print("QS", qs)
+    df = read_frame(qs, coerce_float=True).convert_objects(convert_numeric=True, convert_dates=True)
+    print(df.dtypes)
+    graph_one = scatter_to_base64(df, "ave_pl_by_symbol")
+    graph_two = scatter_to_base64(df, "ave_pl_by_wkday")
+    graph_three = scatter_to_base64(df, "ave_pl_by_month")
+    graph_four = scatter_to_base64(df, "ave_pl_by_year")
+    graph_five = scatter_to_base64(df, "ave_pl_by_direction")
+    graph_six = scatter_to_base64(df, "ave_pl_by_session")
+    graph_seven = scatter_to_base64(df, "ave_pl_by_dir_session")
+    context["graph_one"] = graph_one
+    context["graph_two"] = graph_two
+    context["graph_three"] = graph_three
+    context["graph_four"] = graph_four
+    context["graph_five"] = graph_five
+    context["graph_six"] = graph_six
+    context["graph_seven"] = graph_seven
+
+    print(context)
+    return render_to_response("charts.html", context, context_instance=RequestContext(request))
+
 
 @login_required
 def upload_data(request):

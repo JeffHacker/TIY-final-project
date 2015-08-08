@@ -21,6 +21,20 @@
 
 {% block content %}
 <body>
+{{ message }}
+    <br/>
+
+    <form method="POST">{% csrf_token %}
+        <p>Start date<input type = 'date'  name='start_date' ></p>
+        {{ invalid_date_response }}
+        {{ full_date_response }}
+        <p>End date<input type = 'date'  name='end_date' ></p>
+        <button type="submit">Submit</button>
+        <br/>
+
+</form>
+
+
 <div class="image-holder">
 <img src="{{ graph_one }}"/>
 <img src="{{ graph_two }}"/>
