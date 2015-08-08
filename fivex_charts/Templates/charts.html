@@ -21,7 +21,6 @@
 
 {% block content %}
 <body>
-{{ message }}
     <br/>
 
     <form method="POST">{% csrf_token %}
@@ -31,6 +30,7 @@
         <p>End date<input type = 'date'  name='end_date' ></p>
         <button type="submit">Submit</button>
         <br/>
+<p>{{ message }}</p>
 
 </form>
 

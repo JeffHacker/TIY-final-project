@@ -1,3 +1,4 @@
+import datetime
 from django.db import IntegrityError
 import numpy as np
 import pandas as pd
@@ -11,6 +12,7 @@ from django.core.urlresolvers import reverse_lazy
 from django.views.generic import ListView, DetailView
 from .forms import UploadFileForm
 from .models import UploadedData, ClosedTrade
+from itertools import chain
 from numpy.random import randn
 
 # Create your views here.
@@ -45,29 +47,51 @@ def logout_view(request):
 
 
 @login_required
-def matplot_lib(request):  # this creates the charts using converter.py
+def matplot_lib(request):  # this filters and creates the charts using converter.py
     context = {}
     qs = ClosedTrade.objects.filter(user=request.user)
-    context['message'] = "Charts represent all dates in database.  Select 'Start' and 'End' dates to select a specific date range"
+    print(type(qs))
+    context['message'] = "Charts represent all dates in database.  Select 'Start' and 'End' dates for a specific date range"
     if len(qs) == 0:
         return redirect('trade_list')
+    # Selected dates from Charts
     if request.method == 'POST':
         start_date = request.POST['start_date']
         end_date = request.POST['end_date']
+        # format start date
         context['message'] = "Charts represent trade data from {} to {}".format(start_date, end_date)
-        if 'start_date' == 'end_date':
+        print(start_date, end_date)
+        if start_date == end_date:
             context['message'] = "Charts represent data for {}".format(start_date)
-            qs = ClosedTrade.objects.filter(user=request.user, opendatetime = str(start_date))
+            start_date_split = start_date.split('-')
+            start_date_int = []
+            for _ in start_date_split:
+                start_date_int.append(int(_))
+            qs = ClosedTrade.objects.filter(user=request.user, opendatetime__startswith=datetime.date(start_date_int[0], start_date_int[1], start_date_int[2]))
         else:
-            print(start_date, end_date)
-            qs = ClosedTrade.objects.filter(user=request.user, opendatetime__range=[str(start_date), str(end_date)]) # Date filters will likely plug in here!!!!!!!
-            print(qs)
+            start_date_split = start_date.split('-')
+            start_date_int = []
+            for _ in start_date_split:
+                start_date_int.append(int(_))
+            # format end date
+            end_date_split = end_date.split('-')
+            end_date_int = []
+            for _ in end_date_split:
+                end_date_int.append(int(_))
+            print(start_date_int)
+            qs_start = ClosedTrade.objects.filter(user=request.user, opendatetime__startswith=datetime.date(start_date_int[0], start_date_int[1], start_date_int[2]))
+            qs_mid = ClosedTrade.objects.filter(user=request.user, opendatetime__range=[str(start_date), str(end_date)])
+            qs_end = ClosedTrade.objects.filter(user=request.user, opendatetime__startswith=datetime.date(end_date_int[0], end_date_int[1], end_date_int[2]))
+            qs = list(chain(qs_start, qs_mid, qs_end))
+            qsid = [trade.id for trade in qs]
+            qs = ClosedTrade.objects.filter(pk__in=qsid)
             if len(qs) == 0:
-                return render_to_response("charts.html", {"invalid_date_response": "These dates contain no trades" },
+                print("no trades in dates", qs)#TROUBLSHOOTING
+                return render_to_response("charts.html", {"invalid_date_response": "These dates contain no trades"},
                                                           context_instance=RequestContext(request))
-    print("QS", qs)
+    print("QS")
     df = read_frame(qs, coerce_float=True).convert_objects(convert_numeric=True, convert_dates=True)
-    print(df.dtypes)
+    #print(df.dtypes)
     graph_one = scatter_to_base64(df, "ave_pl_by_symbol")
     graph_two = scatter_to_base64(df, "ave_pl_by_wkday")
     graph_three = scatter_to_base64(df, "ave_pl_by_month")
@@ -82,8 +106,6 @@ def matplot_lib(request):  # this creates the charts using converter.py
     context["graph_five"] = graph_five
     context["graph_six"] = graph_six
     context["graph_seven"] = graph_seven
-
-    print(context)
     return render_to_response("charts.html", context, context_instance=RequestContext(request))
 
 
@@ -130,3 +152,18 @@ def upload_data(request):
     # Render list page with the documents and the form
     return render_to_response('upload_data.html',
                               {'documents': documents, 'form': form}, context_instance=RequestContext(request))
+
+
+
+'''
+# Formats start_date into integers in a tuple
+start_date = '2012-11-29'
+print(start_date)
+start_date_split = start_date.split('-')
+print(start_date_split)
+start_date = []
+for _ in start_date_split:
+    start_date.append(int(_))
+print(start_date)
+        # End cleaning dates
+'''
