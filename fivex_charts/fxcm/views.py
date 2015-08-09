@@ -38,12 +38,6 @@ def logout_view(request):
     return redirect('login')
 
 
-def success_upload(request):
-    print(upload_data.documents)
-    return render_to_response('upload_trade_list.html', {"success_upload_comment": "Successfully uploaded trades..."},
-                              context_instance=RequestContext(request))
-
-
 # -----------------------------------------------------------------------------------------------------
 
 
@@ -171,6 +165,7 @@ def matplot_lib(request):  # this filters and creates the charts using converter
 
 @login_required
 def upload_data(request):
+    tradesuploaded = []
     if request.method == 'POST':
         form = UploadFileForm(request.POST, request.FILES)
         if form.is_valid():
@@ -203,10 +198,12 @@ def upload_data(request):
 
                 except IntegrityError:
                     continue
+            tradesuploaded = ClosedTrade.objects.filter(data=newdoc)
+
 
     form = UploadFileForm() # A empty, unbound form  #UploadFileForm is equal to DocumentForm in the tutorial
     # Load documents for the list page
-    documents = UploadedData.objects.all()
     # Render list page with the documents and the form
-    return render_to_response('upload_data.html', {'documents': documents, 'form': form},
+    print(tradesuploaded)
+    return render_to_response('upload_data.html', {'documents': tradesuploaded, 'form': form},
                               context_instance=RequestContext(request))

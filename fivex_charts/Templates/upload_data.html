@@ -4,15 +4,7 @@
 {% block content %}
     <body>
     <!-- List of uploaded documents -->
-    {% if documents %}
-        <ul>
-        {% for document in documents %}
-<!--            <li><a href="media/{{ document.data }}">{{ document }}</a></li>  __>
-        {% endfor %}
-        </ul>
-    {% else %}
-        <p>No documents.</p>
-    {% endif %}
+
 
         <!-- Upload form. Note enctype attribute! -->
         <form action="" method="post" enctype="multipart/form-data">
@@ -25,6 +17,17 @@
             </p>
             <p><input type="submit" value="Upload" /></p>
         </form>
+
+        {% if documents %}
+        <ul>
+        {% for trade in documents %}
+          <li><a href="{% url "trade_detail" trade.id %}">Ticket #{{ trade.ticket }}</a></li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>No documents.</p>
+
+    {% endif %}
     </body>
 {% endblock %}
 
