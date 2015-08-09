@@ -34,9 +34,10 @@ urlpatterns = [
     url(r'^accounts/login/$', login, name='login'),
     url(r'^accounts/logout/$', logout_view, name='logout'),
     url(r'^charts/', matplot_lib, name='charts'),
-    url(r'^internal_landing/', internal_landing, name='internal_landing'),
+    url(r'^internal_landing/$', internal_landing, name='internal_landing'),
     url(r'^upload_data/', upload_data, name='upload_data'),
     url(r'^register/', CreateView.as_view(template_name='register.html', form_class=UserCreationForm, success_url='/accounts/login/'), name='register'),
     url(r'^trade_detail/(?P<pk>\d+)/$', TradeDetailView.as_view(template_name='trade_detail.html'), name='trade_detail'),
     url(r'^trade_list/', TradeListView.as_view(template_name='trade_list.html'), name='trade_list'),
+    url(r'^upload_trade_list/', upload_data, name='upload_trade_list'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

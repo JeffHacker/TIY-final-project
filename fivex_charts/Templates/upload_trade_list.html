@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+
+
+    <body>
+
+    <style>
+        .trade{
+            margin-bottom: 4%;
+            margin-top: 4%;
+        }
+    </style>
+
+    {% for trade in object_list %}
+        <div><a href="{% url "trade_detail" trade.id %}">Ticket # {{ trade.ticket }}</a></div>
+    {% endfor %}
+    {% if object_list|length == 0 %}
+        <p>No trades to display yet.  Please <a href="{% url 'upload_data' %}">Upload Data</a> first.</p>
+    {% endif %}
+
+    </body>
+{% endblock %}
+
+
+{% block id_user %}
+{% endblock %}

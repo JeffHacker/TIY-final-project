@@ -1,24 +1,6 @@
 {% extends 'base.html' %}
 
 
-{% block nav_bar %}
-    <style>
-    {
-        list-style-type: none;
-        margin: 0;
-        padding: 0;
-    }
-    </style>
-    <ul>
-      <li><a href=/charts/>Charts</a></li>
-      <li><a href=/upload_data/>Upload Data</a></li>
-      <li><a href=/trade_list/>Trade details</a></li>
-      <li><a href="{% url 'logout' %}">logout</a></li>
-      <li><a href="{% url 'internal_landing' %}">Home</a></li>
-    </ul>
-{% endblock %}
-
-
 {% block content %}
 
 
@@ -30,12 +12,21 @@
             margin-top: 4%;
         }
     </style>
+    <!-------------------------------------------------------->
+    <form>{% csrf_token %}
+        <p>Start date<input type = 'date'  name='start_date' ></p>
+        {{ invalid_date_response }}
+        {{ full_date_response }}
+        <p>End date<input type = 'date'  name='end_date' ></p>
+        <button type="submit">Submit</button>
+    <!-------------------------------------------------------->
+
 
     {% for trade in object_list %}
         <div><a href="{% url "trade_detail" trade.id %}">Ticket # {{ trade.ticket }}</a></div>
     {% endfor %}
     {% if object_list|length == 0 %}
-        <p>No trades to display yet.  Please <a href="{% url 'upload_data' %}">Upload Data</a> first.</p>
+        <p>No trades to display.  Select a correct date range or <a href="{% url 'upload_data' %}">Upload Data</a>.</p>
     {% endif %}
 
     </body>
