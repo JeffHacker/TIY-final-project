@@ -17,8 +17,10 @@
         <div><a href="{% url "trade_detail" trade.id %}">Ticket # {{ trade.ticket }}</a></div>
     {% endfor %}
     {% if object_list|length == 0 %}
-        <p>No trades to display yet.  Please <a href="{% url 'upload_data' %}">Upload Data</a> first.</p>
+        <p>No trades uploaded.  Please <a href="{% url 'upload_data' %}">Upload Data</a> first.</p>
     {% endif %}
+
+    {{ success_upload_comment }}
 
     </body>
 {% endblock %}

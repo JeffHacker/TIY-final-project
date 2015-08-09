@@ -38,6 +38,12 @@ def logout_view(request):
     return redirect('login')
 
 
+def success_upload(request):
+    print(upload_data.documents)
+    return render_to_response('upload_trade_list.html', {"success_upload_comment": "Successfully uploaded trades..."},
+                              context_instance=RequestContext(request))
+
+
 # -----------------------------------------------------------------------------------------------------
 
 
@@ -46,71 +52,42 @@ class TradeListView(ListView):
     template_name = 'trade_list.html'
     def get_queryset(self):
         try:
-            print('try')
             start_date = self.request.GET['start_date']
             end_date = self.request.GET['end_date']
-            print("START", start_date, "END", end_date)
             if len(start_date) + len(end_date) == 0:
-                    print("s/e len = 0")
                     raise Exception
             # filter dates to display trades
             # format start date
             if start_date == end_date:
-                print('if sd/ed equal')
                 start_date_split = start_date.split('-')
-                print(start_date_split)
                 start_date_int = []
-                print('about to hit for loop')
                 for _ in start_date_split:
                     start_date_int.append(int(_))
-                print('about to hit qs= on s/e =')
                 qs = ClosedTrade.objects.filter(user=self.request.user, opendatetime__startswith=datetime.date(start_date_int[0], start_date_int[1], start_date_int[2]))
-                print('return qs for =')
                 return qs
             else:
-                print('else')
                 start_date_split = start_date.split('-')
                 start_date_int = []
-                print('about to hit start for loop')
                 for _ in start_date_split:
                     start_date_int.append(int(_))
                 # format end date
                 end_date_split = end_date.split('-')
                 end_date_int = []
-                print('about to hit end for loop')
                 for _ in end_date_split:
                     end_date_int.append(int(_))
-                print('about to hit qs on else')
-                qs_mid = ClosedTrade.objects.filter(user=self.request.user, opendatetime__range=[str(start_date), str(end_date)])
-                print('just made qs_mid')
+                    print(start_date_int)
+                    print(end_date_int)
                 qs_start = ClosedTrade.objects.filter(user=self.request.user, opendatetime__startswith=datetime.date(start_date_int[0], start_date_int[1], start_date_int[2]))
+                qs_mid = ClosedTrade.objects.filter(user=self.request.user, opendatetime__range=[str(start_date), str(end_date)])
                 qs_end = ClosedTrade.objects.filter(user=self.request.user, opendatetime__startswith=datetime.date(end_date_int[0], end_date_int[1], end_date_int[2]))
                 qs = list(chain(qs_start, qs_mid, qs_end))
                 qsid = [trade.id for trade in qs] # Bekk
                 qs = ClosedTrade.objects.filter(pk__in=qsid) # Bekk
                 return qs
         except:
-            print('except')
             # Show all Individual trades for current user regardless of date
             qs = ClosedTrade.objects.filter(user=self.request.user)
-            print('just created except qs')
-
             return qs
-
-
-# -----------------------------------------------------------------------------------------------------
-
-
-'''
-class UploadTradeListView(ListView):
-    model = UploadedData
-    template_name = 'upload_trade_list.html'
-    def get_upload_list(self):
-        # Individual trades just uploaded
-        dful = pd.read_csv()################################################################
-
-    return
-'''
 
 
 # -----------------------------------------------------------------------------------------------------
@@ -124,10 +101,19 @@ def matplot_lib(request):  # this filters and creates the charts using converter
     context['message'] = "Charts represent all dates in database.  Select 'Start' and 'End' dates for a specific date range"
     if len(qs) == 0:
         return redirect('trade_list')
-    # Selected dates from Charts
+    # Date input from Charts
     if request.method == 'POST':
         start_date = request.POST['start_date']
         end_date = request.POST['end_date']
+        if len(start_date) == 0:
+            return render_to_response("charts.html", {"invalid_date_response": "Dates entered not valid"},
+                                          context_instance=RequestContext(request))
+        if len(end_date) == 0:
+            return render_to_response("charts.html", {"invalid_date_response": "Dates entered not valid"},
+                                          context_instance=RequestContext(request))
+        if end_date < start_date:
+            return render_to_response("charts.html", {"invalid_date_response": "Start date must be earlier than End date"},
+                                          context_instance=RequestContext(request))
         # format start date
         context['message'] = "Charts represent trade data from {} to {}".format(start_date, end_date)
         print(start_date, end_date)
@@ -137,7 +123,11 @@ def matplot_lib(request):  # this filters and creates the charts using converter
             start_date_int = []
             for _ in start_date_split:
                 start_date_int.append(int(_))
-            qs = ClosedTrade.objects.filter(user=request.user, opendatetime__startswith=datetime.date(start_date_int[0], start_date_int[1], start_date_int[2]))
+            qs = ClosedTrade.objects.filter(user=request.user, opendatetime__startswith=datetime.date
+            (start_date_int[0], start_date_int[1], start_date_int[2]))
+            if len(qs) == 0:
+                return render_to_response("charts.html", {"invalid_date_response": "These dates contain no trades"},
+                                              context_instance=RequestContext(request))
         else:
             start_date_split = start_date.split('-')
             start_date_int = []
@@ -148,10 +138,9 @@ def matplot_lib(request):  # this filters and creates the charts using converter
             end_date_int = []
             for _ in end_date_split:
                 end_date_int.append(int(_))
-            print(start_date_int)
             qs_start = ClosedTrade.objects.filter(user=request.user, opendatetime__startswith=datetime.date(start_date_int[0], start_date_int[1], start_date_int[2]))
-            qs_mid = ClosedTrade.objects.filter(user=request.user, opendatetime__range=[str(start_date), str(end_date)])
             qs_end = ClosedTrade.objects.filter(user=request.user, opendatetime__startswith=datetime.date(end_date_int[0], end_date_int[1], end_date_int[2]))
+            qs_mid = ClosedTrade.objects.filter(user=request.user, opendatetime__range=[str(start_date), str(end_date)])
             qs = list(chain(qs_start, qs_mid, qs_end))
             qsid = [trade.id for trade in qs]
             qs = ClosedTrade.objects.filter(pk__in=qsid)
@@ -159,7 +148,7 @@ def matplot_lib(request):  # this filters and creates the charts using converter
                 print("no trades in dates", qs)#TROUBLSHOOTING
                 return render_to_response("charts.html", {"invalid_date_response": "These dates contain no trades"},
                                                           context_instance=RequestContext(request))
-    print("QS")
+    print("QS", qs)
     df = read_frame(qs, coerce_float=True).convert_objects(convert_numeric=True, convert_dates=True)
     #print(df.dtypes)
     graph_one = scatter_to_base64(df, "ave_pl_by_symbol")
@@ -186,15 +175,12 @@ def upload_data(request):
         form = UploadFileForm(request.POST, request.FILES)
         if form.is_valid():
             trade_list = list(request.FILES['data'])
-            newdoc = UploadedData(user=request.user, data = request.FILES['data']) #data is the FileField in my UploadedData model
+            newdoc = UploadedData(user=request.user, data = request.FILES['data']) #data = FileField in UploadedData
             newdoc.save()  # save file to FileField
-            #print(newdoc)
             #reading in the data fields
             for trade in trade_list[1:]: # or data?
                 cleantrade = trade.decode("utf-8")  # Bekk
-                #print("CLEANTRADE", cleantrade)
                 trade_info = cleantrade.replace("\n", "").split(',')
-                #print(trade_info)
                 trade_info[0] = int(trade_info[0])
                 trade_info[2] = int(trade_info[2])
                 trade_info[5] = float(trade_info[5])
@@ -222,5 +208,5 @@ def upload_data(request):
     # Load documents for the list page
     documents = UploadedData.objects.all()
     # Render list page with the documents and the form
-    return render_to_response('upload_data.html',
-                              {'documents': documents, 'form': form}, context_instance=RequestContext(request))
+    return render_to_response('upload_data.html', {'documents': documents, 'form': form},
+                              context_instance=RequestContext(request))
