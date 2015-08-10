@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 
 # Create your models here.
 
+
 class UserProfile(models.Model):
     user = models.OneToOneField(User)
     member = models.BooleanField(default=False)
@@ -44,7 +45,6 @@ class ClosedTrade(models.Model):
     buycondition = models.CharField(max_length=3)
     sellcondition = models.CharField(max_length=3)
     createdbyaccount = models.BigIntegerField()
-    tradenotes = models.TextField(blank=True, help_text='Trade Notes:')
 
     class Meta:
         unique_together = ("user", "ticket")
@@ -56,3 +56,12 @@ class ClosedTrade(models.Model):
                                                self.soldprice, self.boughtprice, self.direction, self.grossprofitloss,
                                                self.comm, self.dividends, self.rollover, self.adj, self.netprofitloss,
                                                self.buycondition, self.sellcondition, self.createdbyaccount)
+
+
+class TradeNotes(models.Model):
+    trade = models.ForeignKey(ClosedTrade)
+    note = models.TextField(blank=True, help_text='Trade Notes:')
+    timestamp = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return "{}, {}".format(self.timestamp, self.trade)

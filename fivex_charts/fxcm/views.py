@@ -9,9 +9,9 @@ from django_pandas.io import read_frame
 from django.shortcuts import render_to_response, redirect
 from django.template import RequestContext
 from django.core.urlresolvers import reverse_lazy
-from django.views.generic import ListView, DetailView
+from django.views.generic import ListView, DetailView, CreateView
 from .forms import UploadFileForm
-from .models import UploadedData, ClosedTrade
+from .models import UploadedData, ClosedTrade, TradeNotes
 from itertools import chain
 from numpy.random import randn
 
@@ -21,6 +21,13 @@ from numpy.random import randn
 class TradeDetailView(DetailView):
     model = ClosedTrade
     template_name = 'trade_detail.html'
+
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        print("hello")
+        context['comments'] = TradeNotes.objects.filter(trade=self.object)
+        return context
 
 
 def main_landing(request):
@@ -36,6 +43,21 @@ def internal_landing(request):
 def logout_view(request):
     logout(request)
     return redirect('login')
+
+
+# -----------------------------------------------------------------------------------------------------
+
+
+def tradenotesview(request):
+    print("DEBUG")
+    if request.POST:
+        id = request.POST['next']
+        note = request.POST['note']
+        closedtrade = ClosedTrade.objects.get(id=id)
+        TradeNotes.objects.create(trade=closedtrade, note=note)
+        return redirect('trade_detail', int(id))
+
+
 
 
 # -----------------------------------------------------------------------------------------------------
@@ -82,6 +104,7 @@ class TradeListView(ListView):
             # Show all Individual trades for current user regardless of date
             qs = ClosedTrade.objects.filter(user=self.request.user)
             return qs
+
 
 
 # -----------------------------------------------------------------------------------------------------

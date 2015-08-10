@@ -24,7 +24,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from fxcm.views import upload_data, matplot_lib, logout_view, TradeListView, TradeDetailView, main_landing, \
-    internal_landing
+    internal_landing, tradenotesview
 from fxcm.models import ClosedTrade
 
 
@@ -40,4 +40,5 @@ urlpatterns = [
     url(r'^register/', CreateView.as_view(template_name='register.html', form_class=UserCreationForm, success_url='/accounts/login/'), name='register'),
     url(r'^trade_detail/(?P<pk>\d+)/$', TradeDetailView.as_view(template_name='trade_detail.html'), name='trade_detail'),
     url(r'^trade_list/', TradeListView.as_view(template_name='trade_list.html'), name='trade_list'),
+    url(r'^trade_notes_view/$', tradenotesview, name='trade_notes_view'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
