@@ -2,23 +2,60 @@
 
 
 {% block content %}
-    {{ object }}
+    <body style="background:#A8A6A3">
+    <div class="container" style="background: #DCDAD7">
 
+    <table class="table">
+<tr>
+<th>Ticket</th>
+<th>Symbol</th>
+<th>Volume</th>
+<th>Open</th>
+<th>Close</th>
+<th>Sold Price</th>
+<th>Bought Price</th>
+<th>Direction</th>
+<th>PNL</th>
+<th>Comm</th>
+<th>Net Profit Loss</th>
+<th>Buy Condition</th>
+<th>Sell Condition</th>
+<th>Create By Account</th>
+
+</tr>
+<tr>
+<td>{{ object.ticket }}</td>
+<td>{{ object.symbol }}</td>
+<td>{{ object.volume }}</td>
+<td>{{ object.opendatetime }}</td>
+<td>{{ object.closedatetime }}</td>
+<td>{{ object.soldprice }}</td>
+<td>{{ object.boughtprice }}</td>
+<td>{{ object.direction }}</td>
+<td>{{ object.grossprofitloss }}</td>
+<td>{{ object.comm }}</td>
+<td>{{ object.netprofitloss }}</td>
+<td>{{ object.buycondition }}</td>
+<td>{{ object.sellcondition }}</td>
+<td>{{ object.createdbyaccount }}</td>
+</tr>
+
+    </table>
     <form method="POST" action="{% url 'trade_notes_view' %}">
         {% csrf_token %}
-        <textarea name="note"></textarea>
+        <textarea name="note" class="form-control" placeholder="Notes for this trade"></textarea>
+
         <input type="hidden" name="next" value='{{ object.id }}'/>
-        <input type="submit" value="Trade Notes" />
+        <input type="submit" value="Enter Trade Note" class="btn btn-default"/>
 
     </form>
-
 
 {% for comment in comments %}
     <br/><h3>Time</h3>  {{ comment.timestamp}}
     <br/><h3>Note content</h3>  {{ comment.note }}
 {% endfor %}
-
-
+</div>
+</body>
 {% endblock %}
 
 {% block id_user %}

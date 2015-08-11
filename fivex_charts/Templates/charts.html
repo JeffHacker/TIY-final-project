@@ -7,24 +7,22 @@
 
     <form method="POST">{% csrf_token %}
         <p>Start date<input type = 'date'  name='start_date' ></p>
-        {{ invalid_date_response }}
-        {{ full_date_response }}
         <p>End date<input type = 'date'  name='end_date' ></p>
         <button type="submit">Submit</button>
         <br/>
-<p>{{ message }}</p>
-
-</form>
-
+        <p>{{ invalid_date_response }}</p>
+        <p>{{ full_date_response }}</p>
+        <p>{{ message }}</p>
+    </form>
 
 <div class="image-holder">
 <img src="{{ graph_one }}"/>
 <img src="{{ graph_two }}"/>
-<img src="{{ graph_three }}"/>
-<img src="{{ graph_four }}"/>
 <img src="{{ graph_five }}"/>
 <img src="{{ graph_six }}"/>
 <img src="{{ graph_seven }}"/>
+<img src="{{ graph_three }}"/>
+<img src="{{ graph_four }}"/>
 </div>
 </body>
 {% endblock %}

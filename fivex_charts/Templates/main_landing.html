@@ -3,24 +3,82 @@
 {% block nav_bar %}
 {% endblock %}
 
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <title>Welcome</title>
-    </head>
-    <body>
+        {% block content  %}<body>
+        {% load staticfiles %}
 
-        {% block content  %}
-            <p>Tracking your trading results is necessary for becoming a more profitable trader.</p>
-            <p>Let me help you save hours of manual data entry and analysis by using your own trade data that you can download from your broker.</p>
-            <p>Create an account and let's get started</p>
+<style>
+html,body{height:100%:;}
+.carousel,.item,.active{height:100%;}
+.carousel-inner{height:100%;}
+.fill{width:100%;height:100%;background-position:center;background-size:cover;}
+
+/* faster sliding speed */
+.carousel-inner > .item {
+    -webkit-transition: 0.3s ease-in-out left;
+    -moz-transition: 0.3s ease-in-out left;
+    -o-transition: 0.3s ease-in-out left;
+    transition: 0.3s ease-in-out left;
+}
+
+/* keep full widget on smaller screens */
+@media (max-width: 767px) {
+	body {
+		padding-left: 0;
+		padding-right: 0;
+	}
+}
+    .onimagetext{
+        position:absolute;
+        top:70%;
+        left:50%;
+        transform: translate(-50%, -50%);
+        color:#120C0F;
+    }
+        .onimagebutton{
+        position:absolute;
+        top:90%;
+        left:55%;
+        transform: translate(-50%, -50%);
+        color:#120C0F;
+        background: #A8A6A3;
+        display:inline;
+    }
+            </style>
+<div class="container fill">
+<div id="myCarousel" class="carousel slide">
+  <div class="carousel-inner">
+    <div class="active item">
+      <div class="fill" style="background-image:url('{% static "lightbulb1.jpg" %}');">
+        <div class="container text-center">
+            <h1 class="onimagetext">Analyzing your trading results is necessary to becoming a more profitable trader.</h1>
+  <button type="button" class="onimagebutton btn btn-default btn-lg">
+      <a  style="color:#DCDAD7;" href="{% url 'register' %}">Sign Up</a></button>
+  <button type="button" class="onimagebutton btn btn-default btn-lg" style="left:45%;">
+      <a  style="color:#DCDAD7;" href="{% url 'login' %}">Login</a></button>
+
+        </div>
+      </div>
+    </div>
+    <div class="item">
+      <div class="fill" style="background-image:url('{% static "lightbulb2.jpg" %}');">
+        <div class="container text-center">
+            <h1 class="onimagetext">Let me help you save hours of manual data entry and analysis by using your own trade data that you can download from your broker.</h1>
+  <button type="button" class="onimagebutton btn btn-default btn-lg">
+      <a  style="color:#DCDAD7;" href="{% url 'register' %}">Sign Up</a></button>
+  <button type="button" class="onimagebutton btn btn-default btn-lg" style="left:45%;">
+      <a  style="color:#DCDAD7;" href="{% url 'login' %}">Login</a></button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<script>
+$('.carousel').carousel();
+</script>
+                </body>
+
         {% endblock %}
-
-    </body>
-</html>
-
-
 {% block id_user %}
-        <p>Welcome. Please <a href="{% url 'login' %}">login</a>:</p>
 {% endblock %}

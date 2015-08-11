@@ -20,16 +20,19 @@
         <p>End date<input type = 'date'  name='end_date' ></p>
         <button type="submit">Submit</button>
     <!-------------------------------------------------------->
-
-
-    {% for trade in object_list %}
-        <div><a href="{% url "trade_detail" trade.id %}">Ticket # {{ trade.ticket }}</a></div>
-    {% endfor %}
-    {% if object_list|length == 0 %}
-        <p>No trades to display.  Select a correct date range or <a href="{% url 'upload_data' %}">Upload Data</a>.</p>
-    {% endif %}
-
+<div id="container">
+    <ul>
+        {% for trade in object_list %}
+            <li><div><a href="{% url "trade_detail" trade.id %}">Ticket # {{ trade.ticket }}</a></div></li>
+        {% endfor %}
+        {% if object_list|length == 0 %}
+            <p>No trades to display.  Select a correct date range or <a href="{% url 'upload_data' %}">Upload Data</a>.</p>
+        {% endif %}
+    </ul>
+</div>
     </body>
+
+
 {% endblock %}
 
 

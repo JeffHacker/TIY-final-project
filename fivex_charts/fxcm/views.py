@@ -165,7 +165,7 @@ def matplot_lib(request):  # this filters and creates the charts using converter
                 print("no trades in dates", qs)#TROUBLSHOOTING
                 return render_to_response("charts.html", {"invalid_date_response": "These dates contain no trades"},
                                                           context_instance=RequestContext(request))
-    print("QS", qs)
+    #print("QS", qs)
     df = read_frame(qs, coerce_float=True).convert_objects(convert_numeric=True, convert_dates=True)
     #print(df.dtypes)
     graph_one = scatter_to_base64(df, "ave_pl_by_symbol")
@@ -227,6 +227,6 @@ def upload_data(request):
     form = UploadFileForm() # A empty, unbound form  #UploadFileForm is equal to DocumentForm in the tutorial
     # Load documents for the list page
     # Render list page with the documents and the form
-    print(tradesuploaded)
+    # print(tradesuploaded)
     return render_to_response('upload_data.html', {'documents': tradesuploaded, 'form': form},
                               context_instance=RequestContext(request))

@@ -3,33 +3,27 @@
 
 {% block content %}
     <body>
-    <!-- List of uploaded documents -->
-
-
         <!-- Upload form. Note enctype attribute! -->
-        <form action="" method="post" enctype="multipart/form-data">
-            {% csrf_token %}
-            <p>{{ form.non_field_errors }}</p>
-            <p>{{ form.data.label_tag }} {{ form.data.help_text }}</p>
-            <p>
-                {{ form.data.errors }}
-                {{ form.data }}
-            </p>
-            <p><input type="submit" value="Upload" /></p>
-        </form>
-
+            <form action="" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <p>{{ form.non_field_errors }}</p>
+                <p>{{ form.data.label_tag }} {{ form.data.help_text }}</p>
+                <p>{{ form.data.errors }}
+                    {{ form.data }}</p>
+                <p><input type="submit" value="Upload" /></p>
+            </form>
         {% if documents %}
-        <ul>
-        {% for trade in documents %}
-          <li><a href="{% url "trade_detail" trade.id %}">Ticket #{{ trade.ticket }}</a></li>
-        {% endfor %}
-        </ul>
-    {% else %}
-        <p>No documents.</p>
-
-    {% endif %}
+            <ul>
+                {% for trade in documents %}
+                    <li><a href="{% url "trade_detail" trade.id %}">Ticket #{{ trade.ticket }}</a></li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No documents.</p>
+        {% endif %}
     </body>
 {% endblock %}
+
 
 {% block id_user %}
 {% endblock %}
