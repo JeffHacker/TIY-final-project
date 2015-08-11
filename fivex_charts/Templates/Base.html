@@ -5,7 +5,6 @@
 <link rel="stylesheet" href="{% static 'bootstrap.min.css' %}">
 <!-- Optional theme -->
 <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css"> -->
-
 <!-- Latest compiled and minified JavaScript -->
 {% endblock %}
 {% block nav_bar %}
@@ -18,16 +17,19 @@
     </style>
 <nav class="navbar navbar-default" role="navigation">
    <div class="navbar-header">
-      <a class="navbar-brand" href="#">Swim with the shark</a>
+      <a class="navbar-brand" href=/>Swim with the shark</a>
    </div>
    <div>
       <ul class="nav navbar-nav">
       {% if user.is_authenticated %}
-          <li><a href="{% url 'logout' %}">Logout</a></li>
+          <li><a href=/internal_landing/>Home</a></li>
+          <li><a>{{ " - " }}</a></li>
           <li><a href=/charts/>Charts</a></li>
           <li><a href=/upload_data/>Upload Data</a></li>
           <li><a href=/trade_list/>Trade details</a></li>
-          <li><a href=/internal_landing/>Home</a></li>
+          <li><a>{{ " - " }}</a></li>
+          <li><a>{{ user.username }}</a></li>
+          <li><a href="{% url 'logout' %}">Logout</a></li>
       {% endif %}
       </ul>
    </div>

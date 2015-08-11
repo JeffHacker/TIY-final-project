@@ -3,6 +3,14 @@
 
 {% block content %}
 <body>
+<style>
+    .image-holder{
+        display:inline-block;
+    }
+    .imagepage{
+        margin-bottom: 10%;
+    }
+</style>
     <br/>
 
     <form method="POST">{% csrf_token %}
@@ -15,14 +23,14 @@
         <p>{{ message }}</p>
     </form>
 
-<div class="image-holder">
-<img src="{{ graph_one }}"/>
-<img src="{{ graph_two }}"/>
-<img src="{{ graph_five }}"/>
-<img src="{{ graph_six }}"/>
-<img src="{{ graph_three }}"/>
-<img src="{{ graph_four }}"/>
-<img src="{{ graph_seven }}"/>
+<div class="imagepage">
+<div class="imageholder"><img src="{{ graph_one }}"/></div>
+<div class="image-holder"><img src="{{ graph_two }}"/></div>
+<div class="image-holder"><img src="{{ graph_five }}"/></div>
+<div class="image-holder"><img src="{{ graph_six }}"/></div>
+<div class="image-holder"><img src="{{ graph_seven }}"/></div>
+<div class="image-holder"><img src="{{ graph_three }}"/></div>
+<div class="image-holder"><img src="{{ graph_four }}"/></div>
 </div>
 </body>
 {% endblock %}
