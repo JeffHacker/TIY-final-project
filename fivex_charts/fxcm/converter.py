@@ -17,7 +17,7 @@ def create_session_range(hour):
 
 import pandas as pd
 def scatter_to_base64(df, action):
-    plt.figure(figsize=(6, 6))
+    plt.figure(figsize=(6, 7))
     if action == "ave_pl_by_symbol":
         plt.title("Average Profit/Loss by Currency Pair", fontsize=20)
         mean_df = pd.DataFrame(df.groupby(['symbol']).grossprofitloss.mean())

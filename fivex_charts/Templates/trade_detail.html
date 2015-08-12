@@ -51,8 +51,9 @@
     </form>
 
 {% for comment in comments %}
-    <br/><h3>Time</h3>  {{ comment.timestamp}}
-    <br/><h3>Note content</h3>  {{ comment.note }}
+    <br/><h4>Time</h4>  {{ comment.timestamp}}
+    <br/><h4>Note content</h4>  {{ comment.note }}
+    </br>
 {% endfor %}
 </div>
 </body>
