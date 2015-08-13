@@ -12,7 +12,7 @@
                     margin-top: 4%;
                 }
             </style>
-            <!-------------------------------------------------------->
+     <!-------------------------------------------------------->
             <form>{% csrf_token %}
                 <p>Start date<input type = 'date'  name='start_date' ></p>
                 {{ invalid_date_response }}
@@ -20,10 +20,14 @@
                 <p>End date<input type = 'date'  name='end_date' ></p>
                 <button type="submit">Submit</button>
             <!-------------------------------------------------------->
-        <div id="container">
+               <div id="container">
             <ul>
+                <div style="color: grey;"> * = Notated</div>
                 {% for trade in object_list %}
-                    <li><div><a href="{% url "trade_detail" trade.id %}">Ticket # {{ trade.ticket }}</a></div></li>
+                    <li><div><a href="{% url "trade_detail" trade.id %}">Ticket # {{ trade.ticket }}</a>
+                    {% if trade.tradenotes.all  %} * {% else %}
+                    {% endif %} </div></li>
+
                 {% endfor %}
                 {% if object_list|length == 0 %}
                     <p>No trades to display.  Select a correct date range or <a href="{% url 'upload_data' %}">Upload Data</a>.</p>

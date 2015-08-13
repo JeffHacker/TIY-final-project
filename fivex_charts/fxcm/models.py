@@ -59,7 +59,7 @@ class ClosedTrade(models.Model):
 
 
 class TradeNotes(models.Model):
-    trade = models.ForeignKey(ClosedTrade)
+    trade = models.ForeignKey(ClosedTrade, related_name='tradenotes')
     note = models.TextField(blank=True, help_text='Trade Notes:')
     timestamp = models.DateTimeField(auto_now_add=True)
 
