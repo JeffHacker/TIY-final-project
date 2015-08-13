@@ -14,9 +14,9 @@
                     <p><input type="submit" value="Upload" /></p>
                 </form>
             {% if documents %}
-                <ul>
+                <ul class="list-group">
                     {% for trade in documents %}
-                        <li><a href="{% url "trade_detail" trade.id %}">Ticket #{{ trade.ticket }}</a></li>
+                        <li class="list-group-item"><a href="{% url "trade_detail" trade.id %}">Ticket #{{ trade.ticket }}</a></li>
                     {% endfor %}
                 </ul>
             {% else %}

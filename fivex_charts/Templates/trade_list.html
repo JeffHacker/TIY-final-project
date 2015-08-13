@@ -21,10 +21,10 @@
                 <button type="submit">Submit</button>
             <!-------------------------------------------------------->
                <div id="container">
-            <ul>
+<ul class="list-group">
                 <div style="color: grey;"> * = Notated</div>
                 {% for trade in object_list %}
-                    <li><div><a href="{% url "trade_detail" trade.id %}">Ticket # {{ trade.ticket }}</a>
+                    <li class="list-group-item"><div><a href="{% url "trade_detail" trade.id %}">Ticket # {{ trade.ticket }}</a>
                     {% if trade.tradenotes.all  %} * {% else %}
                     {% endif %} </div></li>
 
