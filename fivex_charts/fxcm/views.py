@@ -58,8 +58,6 @@ def tradenotesview(request):
         return redirect('trade_detail', int(id))
 
 
-
-
 # -----------------------------------------------------------------------------------------------------
 
 
@@ -97,14 +95,13 @@ class TradeListView(ListView):
                 qs_mid = ClosedTrade.objects.filter(user=self.request.user, opendatetime__range=[str(start_date), str(end_date)])
                 qs_end = ClosedTrade.objects.filter(user=self.request.user, opendatetime__startswith=datetime.date(end_date_int[0], end_date_int[1], end_date_int[2]))
                 qs = list(chain(qs_start, qs_mid, qs_end))
-                qsid = [trade.id for trade in qs] # Bekk
-                qs = ClosedTrade.objects.filter(pk__in=qsid) # Bekk
+                qsid = [trade.id for trade in qs]  # Bekk
+                qs = ClosedTrade.objects.filter(pk__in=qsid)  # Bekk
                 return qs
         except:
             # Show all Individual trades for current user regardless of date
             qs = ClosedTrade.objects.filter(user=self.request.user)
             return qs
-
 
 
 # -----------------------------------------------------------------------------------------------------
@@ -162,12 +159,12 @@ def matplot_lib(request):  # this filters and creates the charts using converter
             qsid = [trade.id for trade in qs]
             qs = ClosedTrade.objects.filter(pk__in=qsid)
             if len(qs) == 0:
-                print("no trades in dates", qs)#TROUBLSHOOTING
+                print("no trades in dates", qs)  # TROUBLESHOOTING
                 return render_to_response("charts.html", {"invalid_date_response": "These dates contain no trades"},
                                                           context_instance=RequestContext(request))
-    #print("QS", qs)
+    # print("QS", qs)
     df = read_frame(qs, coerce_float=True).convert_objects(convert_numeric=True, convert_dates=True)
-    #print(df.dtypes)
+    # print(df.dtypes)
     graph_one = scatter_to_base64(df, "ave_pl_by_symbol")
     graph_two = scatter_to_base64(df, "ave_pl_by_wkday")
     graph_three = scatter_to_base64(df, "ave_pl_by_month")
@@ -186,6 +183,7 @@ def matplot_lib(request):  # this filters and creates the charts using converter
 
 # -----------------------------------------------------------------------------------------------------
 
+
 @login_required
 def upload_data(request):
     tradesuploaded = []
@@ -193,10 +191,10 @@ def upload_data(request):
         form = UploadFileForm(request.POST, request.FILES)
         if form.is_valid():
             trade_list = list(request.FILES['data'])
-            newdoc = UploadedData(user=request.user, data = request.FILES['data']) #data = FileField in UploadedData
+            newdoc = UploadedData(user=request.user, data = request.FILES['data'])  # data = FileField in UploadedData
             newdoc.save()  # save file to FileField
-            #reading in the data fields
-            for trade in trade_list[1:]: # or data?
+            # reading in the data fields
+            for trade in trade_list[1:]:
                 cleantrade = trade.decode("utf-8")  # Bekk
                 trade_info = cleantrade.replace("\n", "").split(',')
                 trade_info[0] = int(trade_info[0])
@@ -222,7 +220,6 @@ def upload_data(request):
                 except IntegrityError:
                     continue
             tradesuploaded = ClosedTrade.objects.filter(data=newdoc)
-
 
     form = UploadFileForm() # A empty, unbound form  #UploadFileForm is equal to DocumentForm in the tutorial
     # Load documents for the list page

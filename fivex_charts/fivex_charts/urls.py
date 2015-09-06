@@ -14,15 +14,15 @@ Including another URLconf
     2. Add a URL to urlpatterns:  url(r'^blog/', include(blog_urls))
 """
 
+from django.conf import settings
+from django.conf.urls import include, url
+from django.conf.urls.static import static
+from django.contrib import admin
 from django.contrib.auth.forms import UserCreationForm, PasswordChangeForm
 from django.contrib.auth.views import login
 from django.core.urlresolvers import reverse_lazy
-from django.views.generic.edit import  CreateView
+from django.views.generic.edit import CreateView
 from django.views.generic import ListView
-from django.conf.urls import include, url
-from django.conf import settings
-from django.conf.urls.static import static
-from django.contrib import admin
 from fxcm.views import upload_data, matplot_lib, logout_view, TradeListView, TradeDetailView, main_landing, \
     internal_landing, tradenotesview
 from fxcm.models import ClosedTrade
